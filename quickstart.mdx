@@ -1,54 +1,28 @@
 ---
-title: Quickstart
-description: "Send your first message in 5 minutes"
+title: "Quickstart"
+description: "Start sending emails with Sending SaaS in minutes"
 ---
 
-This guide will help you send your first Email and SMS using the Sending SaaS API.
+## 1. Get your API Key
 
-## Prerequisites
+Login to the [Dashboard](https://change.me), navigate to **API Keys**, and create a new key.
 
-- An active [Sending SaaS account](https://dashboard.sending-saas.com).
-- A valid JWT Token (obtainable via authentication endpoints).
+## 2. Send an Email
 
-## Authentication
-
-Authenticate your requests by including your JWT Token in the `Authorization` header.
-
-```bash
-Authorization: Bearer <your_jwt_token>
-```
-
-## 1. Send an Email
-
-Use the `/send/email` endpoint to send a transactional email.
+Use the `curl` command to send your first email. Replace `<your_api_key>` with the key you generated.
 
 ```bash
 curl -X POST https://api.sending-saas.com/api/v1/send/email \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Authorization: Bearer <your_api_key>" \
   -H "Content-Type: application/json" \
   -d '{
-    "to": "user@example.com",
-    "subject": "Hello from Sending SaaS",
-    "html": "<strong>Welcome!</strong> This is your first email."
+    "from": "onboarding@your-domain.com",
+    "to": ["delivered@resend.dev"],
+    "subject": "Hello World",
+    "html_body": "<strong>It works!</strong>"
   }'
 ```
 
-## 2. Send an SMS
+## 3. Verify Delivery
 
-Use the `/send/sms` endpoint to send a text message.
-
-```bash
-curl -X POST https://api.sending-saas.com/api/v1/send/sms \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "to": "+1234567890",
-    "body": "Your verification code is 123456"
-  }'
-```
-
-## Next Steps
-
-- Explore the [Email API](/features/email) details.
-- Learn about [SMS capabilities](/features/sms).
-- Check the [API Reference](/api-reference) for full specs.
+Check the **Messages** tab in your dashboard to see the status of your email.

@@ -1,30 +1,62 @@
 ---
 title: Introduction
-description: "Welcome to the Sending SaaS API documentation"
+description: "Welcome to the Sending SaaS documentation"
 ---
 
-Welcome to the **Sending SaaS** developer documentation. Our platform provides a unified API for multi-channel messaging, allowing you to easily send emails and SMS through a smart routing system that optimizes for cost and deliverability.
+# Introduction
+
+> Sending SaaS is a unified API for email and SMS delivery, designed for developers who need reliable, scalable communication infrastructure.
 
 ## Key Features
 
-- **Unified API**: Single interface for multiple providers (Twilio, SendGrid, AWS SES, etc.).
-- **Smart Routing**: Automatically routes traffic to the most cost-effective provider for a given region.
-- **Failover**: Automatic retry on backup providers if the primary fails.
-- **Security**: Granular API keys and secure authentication.
+<CardGroup cols={2}>
+  <Card
+    title="Email & SMS"
+    icon="envelope"
+    href="/sending/email"
+  >
+    Send transactional emails and SMS messages via a single, unified API.
+  </Card>
+  <Card
+    title="Domain Management"
+    icon="globe"
+    href="/configuration/domains"
+  >
+    Verify your domains to ensure high deliverability and reputation.
+  </Card>
+  <Card
+    title="Templates"
+    icon="file-code"
+    href="/growth/templates"
+  >
+    Create and manage reusable templates for your campaigns.
+  </Card>
+  <Card
+    title="Analytics"
+    icon="chart-mixed"
+    href="https://change.me"
+  >
+    Track opens, clicks, and delivery status in real-time.
+  </Card>
+</CardGroup>
 
 ## Getting Started
 
-To get started with the Sending SaaS API, you'll need an API key.
+Ready to start sending?
 
-1.  **[Sign up](https://dashboard.sending-saas.com)** for an account.
-2.  Navigate to the **API Keys** section in your dashboard.
-3.  Create a new API Key.
-4.  Check out the [Quickstart](/quickstart) guide to send your first message.
-
-## Base URL
-
-All API requests should be made to:
-
-```bash
-https://api.sending-saas.com/api/v1
-```
+<CardGroup cols={2}>
+  <Card
+    title="Quickstart"
+    icon="bolt"
+    href="/quickstart"
+  >
+    Send your first message in minutes.
+  </Card>
+  <Card
+    title="API Reference"
+    icon="code"
+    href="/api-reference/openapi.json"
+  >
+    Explore the full API specification.
+  </Card>
+</CardGroup>
