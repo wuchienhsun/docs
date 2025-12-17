@@ -1,0 +1,42 @@
+---
+title: SMS API
+description: "Send global SMS messages"
+---
+
+The SMS API enables you to send text messages to users worldwide.
+
+## Sending an SMS
+
+### Endpoint
+
+`POST /api/v1/send/sms`
+
+### Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `to` | string | Yes | The recipient's phone number in E.164 format (e.g., +1234567890). |
+| `body` | string | Yes | The text content of the message. |
+
+### Example
+
+```bash
+curl -X POST https://api.sending-saas.com/api/v1/send/sms \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "to": "+14155552671",
+    "body": "Your appointment is confirmed for tomorrow at 10 AM."
+  }'
+```
+
+## Global Reach & Pricing
+
+We support sending SMS to over 200 countries.
+
+- **Smart Routing**: We automatically route your message through the most cost-effective local provider (e.g., Twilio, Vonage, Plivo).
+- **Compliance**: We handle local regulations and sender ID requirements where possible.
+
+### Pricing Tiers
+
+Pricing varies by destination country. Check your dashboard for the most up-to-date rates per country.

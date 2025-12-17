@@ -1,0 +1,49 @@
+---
+title: Email API
+description: "Send transactional and marketing emails"
+---
+
+The Email API allows you to send simple text emails, HTML emails, and use templates.
+
+## Sending an Email
+
+### Endpoint
+
+`POST /api/v1/send/email`
+
+### Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `to` | string \| string[] | Yes | The recipient's email address(es). Max 500 recipients. |
+| `subject` | string | Yes | The subject line of the email. |
+| `body` | string | No | Plain text content. |
+| `html` | string | No | HTML content. (Takes precedence over `body` if supported by client). |
+| `from` | string | No | Custom sender address (must be verified domain). |
+
+### Example (Single Recipient)
+
+```bash
+curl -X POST https://api.sending-saas.com/api/v1/send/email \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "to": "customer@example.com",
+    "from": "support@yourdomain.com",
+    "subject": "Order Confirmation",
+    "html": "<h1>Thanks for your order!</h1><p>Order #12345 has been attempted.</p>"
+  }'
+```
+
+### Example (Multiple Recipients)
+
+```bash
+curl -X POST https://api.sending-saas.com/api/v1/send/email \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "to": ["user1@example.com", "user2@example.com"],
+    "subject": "Weekly Newsletter",
+    "html": "<p>Check out our latest updates!</p>"
+  }'
+```

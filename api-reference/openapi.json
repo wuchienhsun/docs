@@ -1,217 +1,485 @@
 {
-  "openapi": "3.1.0",
-  "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
-  "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
+    "openapi": "3.0.0",
+    "info": {
+        "description": "API documentation for Sending SaaS platform",
+        "title": "Sending SaaS API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
         },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          }
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      }
+        "version": "1.0"
     },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
+    "paths": {
+        "/send/email": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "send",
+                    "public"
+                ],
+                "summary": "Send an email",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/services.SendEmailRequest"
+                            }
+                        }
+                    },
+                    "description": "Email details",
+                    "required": true
+                },
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/handlers.MessageResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/send/email/batch": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "send",
+                    "public"
+                ],
+                "summary": "Send batch emails",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/services.BatchSendEmailRequest"
+                            }
+                        }
+                    },
+                    "description": "Batch email details",
+                    "required": true
+                },
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/services.BatchSendEmailResult"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/send/sms": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "send",
+                    "public"
+                ],
+                "summary": "Send an SMS",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/services.SendSMSRequest"
+                            }
+                        }
+                    },
+                    "description": "SMS details",
+                    "required": true
+                },
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/handlers.MessageResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/send/sms/batch": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "send",
+                    "public"
+                ],
+                "summary": "Send batch SMS",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/services.BatchSendSMSRequest"
+                            }
+                        }
+                    },
+                    "description": "Batch SMS details",
+                    "required": true
+                },
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/services.BatchSendSMSResult"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "servers": [
+        {
+            "url": "https://example.com/api/v1"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "description": "Type \"Bearer\" followed by a space and JWT token.",
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header"
+            }
+        },
+        "schemas": {
+            "handlers.MessageResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            },
+            "services.BatchSendEmailRequest": {
+                "type": "object",
+                "properties": {
+                    "body": {
+                        "type": "string"
+                    },
+                    "campaign": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "description": "Shared data for all recipients (used when recipients_data not provided)",
+                        "type": "object",
+                        "additionalProperties": true
+                    },
+                    "from": {
+                        "type": "string"
+                    },
+                    "html_body": {
+                        "type": "string"
+                    },
+                    "recipients": {
+                        "description": "Simple list of recipients (all get same content)",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "recipients_data": {
+                        "description": "Personalized recipients with individual data (e.g., coupon codes)",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/services.RecipientData"
+                        }
+                    },
+                    "reply_to": {
+                        "type": "string"
+                    },
+                    "scheduled_at": {
+                        "type": "string"
+                    },
+                    "subject": {
+                        "type": "string"
+                    },
+                    "template": {
+                        "description": "Template UUID",
+                        "type": "string"
+                    }
+                }
+            },
+            "services.BatchSendEmailResult": {
+                "type": "object",
+                "properties": {
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "failed": {
+                        "type": "integer"
+                    },
+                    "message_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "successful": {
+                        "type": "integer"
+                    },
+                    "total": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "services.BatchSendSMSRequest": {
+                "type": "object",
+                "properties": {
+                    "body": {
+                        "type": "string"
+                    },
+                    "campaign": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "description": "Shared data for all recipients (used when recipients_data not provided)",
+                        "type": "object",
+                        "additionalProperties": true
+                    },
+                    "recipients": {
+                        "description": "Simple list of recipients (all get same content)",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "recipients_data": {
+                        "description": "Personalized recipients with individual data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/services.RecipientData"
+                        }
+                    },
+                    "scheduled_at": {
+                        "type": "string"
+                    },
+                    "template": {
+                        "description": "Template UUID",
+                        "type": "string"
+                    }
+                }
+            },
+            "services.BatchSendSMSResult": {
+                "type": "object",
+                "properties": {
+                    "campaign_id": {
+                        "type": "string"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "failed": {
+                        "type": "integer"
+                    },
+                    "message_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "paused": {
+                        "type": "integer"
+                    },
+                    "successful": {
+                        "type": "integer"
+                    },
+                    "total": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "services.RecipientData": {
+                "type": "object",
+                "required": [
+                    "to"
+                ],
+                "properties": {
+                    "data": {
+                        "description": "Personalized data for this recipient",
+                        "type": "object",
+                        "additionalProperties": true
+                    },
+                    "to": {
+                        "type": "string"
+                    }
+                }
+            },
+            "services.SendEmailRequest": {
+                "type": "object",
+                "required": [
+                    "to"
+                ],
+                "properties": {
+                    "body": {
+                        "type": "string"
+                    },
+                    "campaign": {
+                        "description": "New: Experiment/Campaign Name",
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object",
+                        "additionalProperties": true
+                    },
+                    "from": {
+                        "description": "Optional: Sender address (must be verified domain)",
+                        "type": "string"
+                    },
+                    "html_body": {
+                        "type": "string"
+                    },
+                    "reply_to": {
+                        "description": "Optional: Reply-To address",
+                        "type": "string"
+                    },
+                    "scheduled_at": {
+                        "description": "Optional: RFC3339 timestamp",
+                        "type": "string"
+                    },
+                    "subject": {
+                        "type": "string"
+                    },
+                    "template": {
+                        "description": "Template UUID",
+                        "type": "string"
+                    },
+                    "to": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "services.SendSMSRequest": {
+                "type": "object",
+                "required": [
+                    "to"
+                ],
+                "properties": {
+                    "body": {
+                        "type": "string"
+                    },
+                    "campaign": {
+                        "description": "New: Experiment/Campaign Name",
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object",
+                        "additionalProperties": true
+                    },
+                    "scheduled_at": {
+                        "description": "Optional: RFC3339 timestamp",
+                        "type": "string"
+                    },
+                    "template": {
+                        "description": "Template UUID",
+                        "type": "string"
+                    },
+                    "to": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
     }
-  }
 }
